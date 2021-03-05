@@ -9,11 +9,12 @@
 cloud = Cloud;
 cloud.Id = 1;
 
+temp = [];
 ids = 0;
 for phase = 1:3
     for freq = 1:3
         wave = sea_waves(freq,phase);   
-        
+       
         % Object creation
         point = Point;
         point.Id = ids;
@@ -21,17 +22,20 @@ for phase = 1:3
         point.Frequency = freq;
         point.Phase = phase;
         
-        %Add to cloud
-        cloud.Points = [cloud.Points,point];
+        %store
+        temp = [temp,point];
         
         %Iterate id
         ids = ids + 1;
-    end
+    end  
 end
 
+cloud.Points = temp;
 
+%Calculate matrix distances
+distances_catalogue = ["pnorm1","pnorm2","pnorm5","pnorm100"];
+matrix_distances = ManagerDistances(cloud,distances_catalogue);
 
-%Calculate distances
-%
-%
-%
+%mypca();
+MyCylinder();
+MyCone();
