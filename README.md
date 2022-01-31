@@ -1,4 +1,4 @@
-# THE CUBINDER PROJECT
+# THE CUBINDER BRAIN
 
 National Institute for Astrophysics Optics and Electronics, Mx.
 
