@@ -1,8 +1,8 @@
-function x = sea_waves(frequencie,phase)
+function x = waves(range_freq,range_phase,sampling_rate,seconds)
    %%Time specifications:
-   Fs = 100;                   % samples per second
+   Fs = sampling_rate;          % samples per second
    dt = 1/Fs;                   % seconds per sample
-   StopTime = 15;                % seconds
+   StopTime = seconds;          % seconds
    t = (0:dt:StopTime-dt)';     % seconds
    %%Sine wave:
    Fc = frequencie;                      % hertz
