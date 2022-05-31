@@ -19,11 +19,19 @@ addpath([mypath 'Documentation'])
 addpath([mypath 'utils']);
 addpath([mypath 'utils/data_simulations']);
 addpath([mypath 'utils/BilinearModel']);
+addpath([mypath 'utils/BilinearM']);
 addpath([mypath 'utils/distances']);
+addpath([mypath 'utils/fourier']);
 addpath([mypath 'utils/projections']);
 addpath([mypath 'plotting/Manifolds']);
 addpath([mypath 'plotting/Projections']);
 addpath([mypath 'plotting/Frequencies']);
-
+addpath([mypath 'Outputs']);
+addpath([mypath 'Outputs/Dataframes']);
+addpath([mypath 'ARvisualization']);
+addpath([mypath 'Outputs/3DModels']);
+addpath([mypath 'legacy/legacy_timeSeries']);
+addpath([mypath 'legacy/legacy_projection']);
+addpath([mypath 'legacy/legacy_cloud']);
 cd(mypath);
 clear mypath

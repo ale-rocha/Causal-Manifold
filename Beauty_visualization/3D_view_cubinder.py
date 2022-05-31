@@ -9,6 +9,15 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import chart_studio
+username = "rochasolache"
+api_key ='L2LvbI7c2WtsThwEBoPM'
+
+chart_studio.tools.set_credentials_file(username=username, api_key=api_key)
+import chart_studio.plotly as py
+import chart_studio.tools as tools
+
+
 
 #["plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"]
 theme= "plotly_white"
@@ -57,6 +66,7 @@ fig = px.scatter_3d(events_cubinder, x='sen_phase', y='cos_phase', z='event_freq
                      "sen_phase": "Sin (phase)",
                      "cos_phase": "Cos (phase)",
                      "event_frequency": "Frequency"})
+py.plot(fig, filename="testing", auto_open=True )
 fig.show()
 
 # Plot scatter 3d - (TIME & FREQ)

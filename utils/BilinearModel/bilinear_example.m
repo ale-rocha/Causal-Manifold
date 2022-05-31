@@ -26,7 +26,7 @@ freq = params_series();
 
 %% Hemodynamic
 P_SD = [0.5 0.5 0.5 3];
-[P,Q] = Hemo(Z, U, P_SD, A,1/freq);
+[P,Q] = Hemo_ale(Z, U, P_SD, A,1/freq);
 
 %% Optic
 Noise = 0;
