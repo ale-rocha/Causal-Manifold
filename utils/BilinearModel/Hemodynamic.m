@@ -18,7 +18,7 @@
 %            spectroscopy. Neuroimage, 111, 338-349.
 
 
-function [p,q] = Hemo_ale(Z, U, P_SD, A,step)
+function [p,q] = Hemodynamic(Z, U, P_SD, A,step)
 
         %In this implementation, the number of cortical regions (nRegions)
         %is inferred by size of Conectivity matrix (A)

@@ -1,19 +1,22 @@
-function [Y_R1, Y_R2] = OpticMaster(pj, qj, U, A, Noise)
-%% Version V1
-% Authors - Mario De Los Santos, Felipe Orihuela-Espina, Javier Herrara-Vega
-% Date - October, 2021
-% Email - madlsh3517@gmail.com
-% Based on: 2015 Stak DCM for fNIRS.
-%
-%% Input Parameters
-% q - HbR - Rate of deoxy-hemoglobin
-% p - HbT - Total Hemoglobin
-%
-%% Output Parameters
-% y- optical density changes 
-%
-%% 
-
+function [Y_R1, Y_R2] = OpticLib(pj, qj, U, A, Noise)
+%% [Optic equation] 
+% This script make a diferentian optic 
+%% Framework
+% 
+% 
+%% Autors:
+% Instituto Nacional de Astrofísica Óptica y Electrónica
+% Departamento de ciencias computacioanles.
+% A.Rocha-Solache F.Orihuela-Espina, G.Rodríguez-Gómez
+% rochasolache@inaoep.mx
+%% Log activity:
+% 14 - Aug - 2021 : Creation file
+% 1 - Feb - 2022 : Resolving to do task
+%   
+%% Biblio
+% [Tak S.] - Tak,S., Kempny,A., Friston,K.J., Leff,A.P., & Penny,W.D. 
+%            (2015). Dynamic causal modelling for functional near-infrared
+%            spectroscopy. Neuroimage, 111, 338-349.
 nRegions  = size(A,1);
 simulationLength = size(U,2);
 % optics parameters

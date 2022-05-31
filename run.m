@@ -7,10 +7,8 @@
 %Crear objecto nube de puntos
 cloud = Cloud;
 cloud.Id = 1;
-
 temp = [];
 ids = 0;
-
 
 for phase = 0.5:0.5:2*pi
     for freq = 1:5:20

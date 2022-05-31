@@ -1,20 +1,18 @@
-%% Version V1
-% Authors - Mario De Los Santos, Felipe Orihuela-Espina, Javier Herrara-Vega
-% Date - July 17th, 2021
-% Email - madlsh3517@gmail.com
+%% Autors:
+% Instituto Nacional de Astrofísica Óptica y Electrónica
+% Departamento de ciencias computacioanles.
+% A.Rocha-Solache F.Orihuela-Espina, G.Rodríguez-Gómez
+% rochasolache@inaoep.mx
+%% Log activity:
+% 31-May-22 : Creation file
 %
-%% Input Parameters
-%   - Freq          + Sampling Frequency.
-%   - Action Time   + Activation time
-%   - Rest Time     + Rest period
-%   - Cycles        + Number of events per instruction (task period + rest period)
-%
-%% Output Parameters
-%
-%   - U             + Stimulus train. Sized <nStimulus x simulationLength>
-%   - Timestamps    + Time sequence for the stimulus train.
-%
-%%
+%   
+%% Biblio
+% [Tak S.] - Tak,S., Kempny,A., Friston,K.J., Leff,A.P., & Penny,W.D. 
+%            (2015). Dynamic causal modelling for functional near-infrared
+%            spectroscopy. Neuroimage, 111, 338-349.
+
+
 function [U, timestamps] = BilinearModel_StimulusTrainGenerator(freq, action_time, rest_time, cycles)
     
 rest  = rest_time * freq;

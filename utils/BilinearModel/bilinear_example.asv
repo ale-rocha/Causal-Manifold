@@ -30,7 +30,7 @@ P_SD = [0.5 0.5 0.5 3];
 
 %% Optic
 Noise = 0;
-[OR] = OpticLib( P,Q,U,A,Noise); 
+[OR] = OpticLi( P,Q,U,A,Noise); 
 
 %% Display results
 if (verbose_plot == true)
