@@ -47,7 +47,7 @@ function [store_max_phases, store_max_freq, store_time] = STFT_Projection(signal
                 %fase al momento de realizar la STFT
                 % ---- Codigo para obtener la fase -----
                 max_phase = get_phase(frequencies_stft, spectre_stft, maximun_frequencies,sec);
-
+                
                 %Store
                 store_max_freq = [store_max_freq,maximun_frequencies];
                 store_max_phases = [store_max_phases,max_phase];

@@ -19,12 +19,21 @@
  
 %% PARAMS
 verbose = false;
+samplig_rate = 100;
 
 %% [1] Get data from DCM model
-[A,B] = get_BM_by_name("Tak",verbose);
+[SMA,M1] = get_BM_by_name("Tak",verbose);
+plot(M1)
 
-%% [2] Proyectar FFT
-% [3] Obtener cubindro normalizado
+%% [2] Proyectar SFFT
+EventsSet = EventsSet();                        %Create even sets
+EventsSet.Name = "Events set Experiement Tak";
+[phaseM1, freqM1, timeM1] = series_to_fourier(M1,samplig_rate);
+[phaseSMA, freqSMA, timeSMA] = series_to_fourier(SMA,samplig_rate);
+scatter3(phaseSMA,freqSMA, timeSMA,20,timeSMA,'filled');
+scatter3(phaseM1, freqM1, timeM1,20,timeM1,'filled');
+shg;
+%% [3] Obtener cubindro normalizado
 
 % [4] Proyectar en cubrindro
 

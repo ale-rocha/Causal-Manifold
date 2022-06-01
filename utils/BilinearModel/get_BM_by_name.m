@@ -15,7 +15,7 @@
 %            spectroscopy. Neuroimage, 111, 338-349.
 
 
-function [p,q,status,log] = get_BM_by_name(name,verbose)
+function [SMA,M1,status,log] = get_BM_by_name(name,verbose)
 
     [params_series,params_dcm,status_name,v] = legacy_name_cdm_model(name,verbose);
     
@@ -36,13 +36,15 @@ function [p,q,status,log] = get_BM_by_name(name,verbose)
         [P,Q] = Hemodynamic(Z, U, P_SD, params_dcm.A,1/freq);
 
         %% Optic
-        [OR] = OpticLib( P,Q,U,params_dcm.A,params_series.Noise); 
+        [SMA,M1] = OpticLib( P,Q,U,params_dcm.A,params_series.Noise); 
 
         %% Display results
-        if (verbose_plot == true)
-            BilinearPlotThetaA(params_dcm.A,params_dcm.B,params_dcm.C,U,Z,P,OR);
-        end
-         
+        %if (verbose_plot == true)
+        %    BilinearPlotThetaA(params_dcm.A,params_dcm.B,params_dcm.C,U,Z,P,OR);
+        %end
+        plot(SMA);
+        status = true;
+        log = "Generado con exito";
     else
         log = "Incorrect name provided";
         status = false;

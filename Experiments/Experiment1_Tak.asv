@@ -21,9 +21,15 @@
 verbose = false;
 
 %% [1] Get data from DCM model
-[A,B] = get_BM_by_name("Tak",verbose);
+[SMA,M1] = get_BM_by_name("Tak",verbose);
+plot(M1)
+%% [2] Proyectar SFFT
+EventsSet = EventsSet();
+EventsSet
+win = hamming(100,'periodic');
+stft(M1(:,1),seconds(1/100),'Window',win,'OverlapLength',0);
+[spectre_stft,frequencies_stft,time_stft]=stft(M1(:,1),seconds(1/100),'Window',win,'OverlapLength',0);
 
-%% [2] Proyectar FFT
 % [3] Obtener cubindro normalizado
 
 % [4] Proyectar en cubrindro

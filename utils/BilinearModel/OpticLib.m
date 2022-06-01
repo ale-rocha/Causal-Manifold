@@ -1,4 +1,4 @@
-function [Y_R1, Y_R2] = OpticLib(pj, qj, U, A, Noise)
+function [YR1, YR2] = OpticLib(pj, qj, U, A, Noise)
 %% [Optic equation] 
 % This script make a diferentian optic 
 %% Framework
@@ -29,7 +29,7 @@ N = [0.65 71 2];
 P0 = N(2);
 % baseline dxy-hb concentration 
 base_hbr = N(2) .* (1 - N(1)); 
-nChannels = 6;
+nChannels = 4;
 
 dq = zeros(nRegions, simulationLength);
 dp = zeros(nRegions, simulationLength);
@@ -50,8 +50,8 @@ Y_R2 = zeros(nChannels, simulationLength);
 extintion1=0.23;
 extintion2=0.88;
 F_P =[(extintion1*0.0007358251*7.5) (extintion2*0.001104715*6.5) ; (extintion1*0.001159306*7.5) (extintion2*0.0007858993*6.5);
-      (extintion1*0.000659306*7.3) (extintion2*0.0001258993*6.5); (extintion1*0.001159306*8.3) (extintion2*0.0009858993*6.9);
-       (extintion1*0.0006959306*7.2) (extintion2*0.0001858993*6.1);  (extintion1*0.001059306*7.5) (extintion2*0.0003858993*7.7)]; 
+      (extintion1*0.000659306*7.3) (extintion2*0.0001258993*6.5); (extintion1*0.001159306*8.3) (extintion2*0.0009858993*6.9)];
+       %(extintion1*0.0006959306*7.2) (extintion2*0.0001858993*6.1);  (extintion1*0.001059306*7.5) (extintion2*0.0003858993*7.7)]; 
 %735.8251 1104.715  = 780nm
 %1159.306 785.8993 = 850nm
 %disp(cond(F_P));
@@ -74,6 +74,7 @@ F_P =[(extintion1*0.0007358251*7.5) (extintion2*0.001104715*6.5) ; (extintion1*0
         disp(size(F_P));
         Y_R1(:,t) = F_P * dhq_r1; 
         Y_R2(:,t) = F_P * dhq_r2;
+        
     end
     
 
@@ -92,10 +93,10 @@ F_P =[(extintion1*0.0007358251*7.5) (extintion2*0.001104715*6.5) ; (extintion1*0
     %ax.ColorOrder = [1 0 0;1 0 0;1 0 0; 0 0 1;0 0 1;0 0 1];
     gap_1 = transpose(Y_R1);
     gap_2 = gap_1(1,:);
-    YR1 = transpose(Y_R1)-gap_2;
+    YR1 = transpose(Y_R1);
     y = awgn(YR1,12,'measured');
     hold on;
-    for i = 1:6
+    for i = 1:4
         plot(y(:,i), 'LineWidth', 2);
     end
     hold off;

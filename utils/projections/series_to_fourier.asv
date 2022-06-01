@@ -1,0 +1,7 @@
+function [x,y,z] = series_to_fourier(series)
+    phases = []; frequencies = []; times=[];
+    sdim = check_dim_shortest_dim(series);
+    for index_serie = 1:sdim %Iter each serie
+         [S_phase,S_freq,S_time] = STFT_Projection(series(:,index_serie), sampling_rate);
+    end
+end
