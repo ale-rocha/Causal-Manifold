@@ -16,14 +16,14 @@
 %
 % En este archivo se generan los resulatdos del primer experientod con
 % datos del modelo general lineal.
+ 
+%% PARAMS
+verbose = false;
 
-% [1] Get data from DCM model
+%% [1] Get data from DCM model
+[A,B] = get_BM_by_name("Tak",verbose);
 
-
-
-
-% [2] Proyectar FFT
-
+%% [2] Proyectar FFT
 % [3] Obtener cubindro normalizado
 
 % [4] Proyectar en cubrindro

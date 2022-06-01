@@ -14,8 +14,7 @@
 
 
 function [U, timestamps] = BilinearModel_StimulusTrainGenerator(freq, action_time, rest_time, cycles)
-    
-rest  = rest_time * freq;
+    rest  = rest_time * freq;
     activation = action_time * freq;
     activation_ = activation;
     Time_period  = (action_time + rest_time) * cycles;
