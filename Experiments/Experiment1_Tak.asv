@@ -19,18 +19,22 @@
  
 %% PARAMS
 verbose = false;
+samplig_rate = 100;
 
 %% [1] Get data from DCM model
 [SMA,M1] = get_BM_by_name("Tak",verbose);
 plot(M1)
-%% [2] Proyectar SFFT
-EventsSet = EventsSet();
-EventsSet
-win = hamming(100,'periodic');
-stft(M1(:,1),seconds(1/100),'Window',win,'OverlapLength',0);
-[spectre_stft,frequencies_stft,time_stft]=stft(M1(:,1),seconds(1/100),'Window',win,'OverlapLength',0);
 
-% [3] Obtener cubindro normalizado
+%% [2] Proyectar SFFT
+EventsSet = EventsSet();                        %Create even sets
+EventsSet.Name = "Events set Experiement Tak";
+SMA = SMA(:,1);
+[phaseM1,senphaseM1, cosphaseM1, freqM1, timeM1] = series_to_fourier(M1,samplig_rate);
+[phaseSMA,senphaseSMA,cosphaseSMA, freqSMA, timeSMA] = series_to_fourier(SMA,samplig_rate);
+plot3(phaseSMA,freqSMA, timeSMA,70,); hold on;
+%scatter3(phaseM1, freqM1, timeM1,20,'blue','filled');
+shg;
+%% [3] Obtener cubindro normalizado
 
 % [4] Proyectar en cubrindro
 

@@ -42,7 +42,6 @@ function [SMA,M1,status,log] = get_BM_by_name(name,verbose)
         %if (verbose_plot == true)
         %    BilinearPlotThetaA(params_dcm.A,params_dcm.B,params_dcm.C,U,Z,P,OR);
         %end
-        plot(SMA);
         status = true;
         log = "Generado con exito";
     else

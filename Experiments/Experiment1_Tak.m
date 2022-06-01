@@ -28,10 +28,11 @@ plot(M1)
 %% [2] Proyectar SFFT
 EventsSet = EventsSet();                        %Create even sets
 EventsSet.Name = "Events set Experiement Tak";
-[phaseM1, freqM1, timeM1] = series_to_fourier(M1,samplig_rate);
-[phaseSMA, freqSMA, timeSMA] = series_to_fourier(SMA,samplig_rate);
-scatter3(phaseSMA,freqSMA, timeSMA,20,timeSMA,'filled');
-scatter3(phaseM1, freqM1, timeM1,20,timeM1,'filled');
+SMA = SMA(:,1);
+[phaseM1,senphaseM1, cosphaseM1, freqM1, timeM1] = series_to_fourier(M1,samplig_rate);
+[phaseSMA,senphaseSMA,cosphaseSMA, freqSMA, timeSMA] = series_to_fourier(SMA,samplig_rate);
+plot3(phaseSMA,freqSMA, timeSMA); hold on;
+%scatter3(phaseM1, freqM1, timeM1,20,'blue','filled');
 shg;
 %% [3] Obtener cubindro normalizado
 
