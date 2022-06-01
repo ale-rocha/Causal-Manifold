@@ -18,36 +18,29 @@
 function [p,q,status,log] = get_BM_by_name(name,verbose)
 
     [params_series,params_dcm,status_name,v] = legacy_name_cdm_model(name,verbose);
+    
     if status_name 
         
         %% Model Tak params
-        freq = params_series(1);
-        A = params_dcm(1);
-        B = params_dcm(2);
-        C = params_dcm(3);
-        disp(A);
-        disp(B);
-        disp(C);
-        
+        freq = params_series.Freq;     
         
         %% Generate Series
         [U, timestamps] = getinputs(freq, 5, 25, 2); 
 
         %% DCM start!
         %% Neurodynamics
-        [Z] = Neurodynamics(A,B,C,U, 1/freq);
+        [Z] = Neurodynamics(params_dcm.A,params_dcm.B,params_dcm.C,U, 1/freq);
 
         %% Hemodynamic
         P_SD = [0.5 0.5 0.5 3];
-        [P,Q] = Hemodynamic(Z, U, P_SD, A,1/freq);
+        [P,Q] = Hemodynamic(Z, U, P_SD, params_dcm.A,1/freq);
 
         %% Optic
-        Noise = 0;
-        [OR] = OpticLib( P,Q,U,A,Noise); 
+        [OR] = OpticLib( P,Q,U,params_dcm.A,params_series.Noise); 
 
         %% Display results
         if (verbose_plot == true)
-            BilinearPlotThetaA(A,B,C,U,Z,P,OR);
+            BilinearPlotThetaA(params_dcm.A,params_dcm.B,params_dcm.C,U,Z,P,OR);
         end
          
     else

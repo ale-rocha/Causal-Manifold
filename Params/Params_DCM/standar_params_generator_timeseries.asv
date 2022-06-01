@@ -5,8 +5,8 @@ function [params_series,params_dcm] = standar_params_generator_timeseries()
         frequency = 10.4;  % FPS 
         timesteps = 300;   % Total of timesteps to compute
         params_series.Freq = frequency;
-        params_series.TimeSteps = timesteps;
-        params_series.Noise = 0;
+        params_series.TimeSteps = [params_series,timesteps];
+        
         % Load dcm parameters
         
         A = [0.01 0.90
