@@ -23,53 +23,52 @@ samplig_rate = 10;
 
 %Instrument
 thisInstrument = Instrument();
-thisInstrument.Name="";
-thisInstrument.SamplingFrequency=1/10;
+thisInstrument.Name="Generic instrument";
+thisInstrument.SamplingFrequency=10;
 thisInstrument.Chanels = 8;
 thisInstrument.WaveLenght = 2;
-thisInstrument.ChannelsNames = ""
 
 %Creating BilinearSimulation
+CDMconfigurationPath = "/Users/alerocha/Documents/Causal-Manifold/Params/Params_DCM/Tak_config.json";
+params_dcm = legacy_BMfiles(CDMconfigurationPath);
 thisBilinearModel = BilinearModel();
-thisBilinearModel.Name = "";
+thisBilinearModel.Name = "Bilinear model Tack";
 thisBilinearModel.Instrument = thisInstrument;
-thisBilinearModel.A
-thisBilinearModel.B
-thisBilinearModel.C
-thisBilinearModel.U
+thisBilinearModel.Params = params_dcm;
 thisBilinearModel.RawData;
+thisBilinearModel.ComputeSimulations; %Run simulations
 
-%Creating event
-thisEvent = Event();
-thisEvent.phase 
-thisEvent.frequency
-thisEvent.time
-thisEvent.infoChannel
+% %Creating event
+% thisEvent = Event();
+% thisEvent.phase 
+% thisEvent.frequency
+% thisEvent.time
+% thisEvent.infoChannel
+% 
+% %Creating events (hereda de simulacion bilineal)
+% thisEvents = setEvents();
+% thisEvents.Events = {Event};
+% thisEvents.thisBilinearModel = thisBilinearModel;
+% 
+% %Creating manifold
+% thisManifold = Manifold ();
+% thisManifold.Name = "Cubinder";
+% thisManifold.Dimensions= 4;
+% thisManifold.Signature= "(3+,1-)";
+% thisManifold.DistanceFunction = "x+y-z";
+% thisManifold.Normalized = false;
+% thisManifold.Description = "Manifold de prueba";
+% thisManifold.Events = Events;
+% 
+% %Creating experiment model
+% thisExperiment = Experiment();
+% thisExperiment.Name ="Tak Experiment";
+% thisExperiment.Type="Testing";
+% thisExperiment.Manifold = thisManifold;
 
-%Creating events (hereda de simulacion bilineal)
-thisEvents = setEvents();
-thisEvents.Events = {Event};
-thisEvents.thisBilinearModel = thisBilinearModel;
-
-%Creating manifold
-thisManifold = Manifold ();
-thisManifold.Name = "Cubinder";
-thisManifold.Dimensions= 4;
-thisManifold.Signature= "(3+,1-)";
-thisManifold.DistanceFunction = "x+y-z";
-thisManifold.Normalized = false;
-thisManifold.Description = "Manifold de prueba";
-thisManifold.Events = Events;
-
-%Creating experiment model
-thisExperiment = Experiment();
-thisExperiment.Name ="Tak Experiment";
-thisExperiment.Type="Testing";
-thisExperiment.Manifold = thisManifold;
 
 
-
-%% [1] Get data from DCM model
+%% [1] Get data from DCM model ===============================================
 %[SMA,M1] = get_BM_by_name("Tak",verbose);
 
 

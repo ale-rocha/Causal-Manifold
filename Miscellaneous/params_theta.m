@@ -3,6 +3,7 @@ function [A,B,C] = params_theta(option)
    if (option == "Tak" )
             A = [0.01 0.90
                  0.01 0.01];
+            
 
             BB{1} = [0 0
                     0 0];

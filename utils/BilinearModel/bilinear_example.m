@@ -16,7 +16,7 @@
 name_example = "Tak - unit test";   %Only a experiment name to display
 verbose_plot = true;                %Plot results?
 %% Model Tak params
-freq = params_series();
+%freq = params_series();
 [A,B,C]= params_theta("Tak");
 [U, timestamps] = getinputs(freq, 5, 25, 2); 
 
