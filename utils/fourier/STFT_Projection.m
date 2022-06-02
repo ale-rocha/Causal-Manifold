@@ -23,6 +23,9 @@ function [store_max_phases, store_max_freq, store_time] = STFT_Projection(signal
     
     win = hamming(sample_rate,'periodic');
     [spectre_stft,frequencies_stft,time_stft] = stft(signal,sample_rate,'Window',win,'OverlapLength',0);
+    figure;
+    stft(signal,sample_rate,'Window',win,'OverlapLength',0);
+    shg;
     %Now, it is necesary save the max frequency and phase of each second
     time_stft = round(time_stft);
     %plot(frequencies_stft,spectre_stft);
