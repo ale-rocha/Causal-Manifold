@@ -1,0 +1,18 @@
+classdef Manifold < matlab.mixin.SetGet
+   properties
+      Name;
+      Description;
+      Normalized;
+   end
+   methods
+       %Gets
+       function value = get.Name(obj)
+        value = obj.Name;
+       end
+       function value = get.Name(obj)
+        value = obj.Name;
+       end
+      
+      
+   end
+end
