@@ -59,24 +59,3 @@ thisExperiment.Type="Testing";
 thisExperiment.Manifold = thisManifold;
 
 
-
-%% [1] Get data from DCM model ===============================================
-%[SMA,M1] = get_BM_by_name("Tak",verbose);
-
-
-%% [2] Proyectar SFFT
-%EventsSet = EventsSet();                        %Create even sets
-%EventsSet.Name = "Events set Experiement Tak";
-%[phaseM1,senphaseM1, cosphaseM1, freqM1, timeM1] = series_to_fourier(M1,samplig_rate);
-%[phaseSMA,senphaseSMA,cosphaseSMA, freqSMA, timeSMA] = series_to_fourier(SMA,samplig_rate);
-%scatter3(cosphaseSMA,freqSMA, timeSMA);
-%xlabel('phase cos');
-%ylabel('freq');
-%zlabel('time');
-%scatter3(phaseM1, freqM1, timeM1,20,'blue','filled');
-%shg;
-%% [3] Obtener cubindro normalizado
-
-% [4] Proyectar en cubrindro
-
-
