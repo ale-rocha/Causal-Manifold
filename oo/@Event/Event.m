@@ -3,6 +3,7 @@ classdef Event < matlab.mixin.SetGet
       Phase;
       Frequency;
       Time;
+      InfoChanel;
    end
    methods
       function value = get.Phase(obj)
@@ -14,6 +15,8 @@ classdef Event < matlab.mixin.SetGet
       function value = get.Time(obj)
         value = obj.Time;
       end   
-      
+       function value = get.InfoChanel(obj)
+        value = obj.InfoChanel;
+      end
    end
 end

@@ -35,28 +35,29 @@ thisBilinearModel = BilinearModel();
 thisBilinearModel.Name = "Bilinear model Tack";
 thisBilinearModel.Instrument = thisInstrument;
 thisBilinearModel.Params = params_dcm;
+thisBilinearModel.RawData;
 thisBilinearModel.ComputeSimulations; %Run simulations
 
 %Creating events (hereda de simulacion bilineal)
 thisEvents = EventsSet();
-thisEvents.BilinearModel = thisBilinearModel;
-thisEvents.ProyectObservationsToEvents;
-
-%Creating manifold
-thisManifold = Manifold ();
-thisManifold.Name = "Cubinder";
-thisManifold.Dimensions= 4;
-thisManifold.Signature= "(3+,1-)";
-thisManifold.DistanceFunction = "x+y-z";
-thisManifold.Normalized = false;
-thisManifold.Description = "Manifold de prueba";
-thisManifold.SetEvents = thisEvents;
-
+thisEvents.Events = {Event};
+thisEvents.thisBilinearModel = thisBilinearModel;
+ProyectObservationsToEvents
+% %Creating manifold
+% thisManifold = Manifold ();
+% thisManifold.Name = "Cubinder";
+% thisManifold.Dimensions= 4;
+% thisManifold.Signature= "(3+,1-)";
+% thisManifold.DistanceFunction = "x+y-z";
+% thisManifold.Normalized = false;
+% thisManifold.Description = "Manifold de prueba";
+% thisManifold.Events = Events;
+% 
 % %Creating experiment model
-thisExperiment = Experiment();
-thisExperiment.Name ="Tak Experiment";
-thisExperiment.Type="Testing";
-thisExperiment.Manifold = thisManifold;
+% thisExperiment = Experiment();
+% thisExperiment.Name ="Tak Experiment";
+% thisExperiment.Type="Testing";
+% thisExperiment.Manifold = thisManifold;
 
 
 

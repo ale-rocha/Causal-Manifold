@@ -21,7 +21,7 @@ classdef EventsSet < matlab.mixin.SetGet
                   y=rawObs(:,chanel);
                   [S_phase,S_freq,S_time] = STFT_Projection(y, obj.BilinearModel.Instrument.SamplingFrequency);
                   %Create event object
-                  for t = 1:size(S_time,2)
+                  for t = 1:size(S_time)
                         e = Event();
                         e.Phase = S_phase(t);
                         e.Frequency = S_freq(t);
