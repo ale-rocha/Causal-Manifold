@@ -2,6 +2,9 @@ classdef EventsSet < matlab.mixin.SetGet
    properties
       EventsRaw ;
       BilinearModel;
+      RangePhase;
+      RangeFrequency;
+      RangeTime;
    end
    methods
       function value = get.EventsRaw(obj)
@@ -15,6 +18,13 @@ classdef EventsSet < matlab.mixin.SetGet
           temp_events = [];
           %get raw observations
           id_counter = 0;
+          %Control dimensions
+          max_frequency = 0;
+          min_frequency = 1000000;
+          max_phase = 0;
+          min_phase = 1000000;
+          max_time = 0;
+          min_time = 7000000;
           %iter along 
               for  chanel = 1:size(rawObs,2)
                   id_counter = id_counter+1;
@@ -26,11 +36,33 @@ classdef EventsSet < matlab.mixin.SetGet
                         e.Phase = S_phase(t);
                         e.Frequency = S_freq(t);
                         e.Time = S_time(t) ;
+                        e.PhaseCos = cos(S_phase(t));
+                        e.PhaseSin = sin(S_phase(t));
                         e.InfoChanel = chanel;
                         temp_events = [temp_events,e];
+                        
+                        if e.Phase > max_phase
+                            max_phase = e.Phase;
+                        elseif e.Phase < min_phase
+                            min_phase = e.Phase;
+                        end
+                        if e.Frequency > max_frequency
+                            max_frequency = e.Frequency;
+                        elseif e.Frequency < min_frequency
+                            min_frequency = e.Frequency;
+                        end
+                        if size(S_time,2) > max_time
+                            max_time = size(S_time,2);
+                        elseif size(S_time,2) < min_time
+                            min_time = size(S_time,2);
+                        end
+     
                   end
+                  obj.RangePhase = [min_phase,max_phase];
+                  obj.RangeFrequency = [min_frequency,max_frequency];
+                  obj.RangeTime = [min_time,max_time];
+                  obj.EventsRaw = temp_events;
               end
-          obj.EventsRaw = temp_events;
-      end
+        end
    end
 end

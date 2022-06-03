@@ -3,6 +3,8 @@ classdef Event < matlab.mixin.SetGet
       Phase;
       Frequency;
       Time;
+      PhaseCos;
+      PhaseSin;
       InfoChanel;
    end
    methods

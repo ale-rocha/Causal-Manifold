@@ -41,8 +41,6 @@ classdef Manifold < matlab.mixin.SetGet
                         e.Phase = p;
                         e.Frequency = f;
                         e.Time = t ;
-                        e.PhaseCos = cos(p);
-                        e.PhaseSin = sin(p);
                         e.InfoChanel = "grid";
                         grid_events =[grid_events,e];
                     end
