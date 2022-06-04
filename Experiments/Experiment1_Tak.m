@@ -24,7 +24,7 @@ samplig_rate = 10;
 %Instrument
 thisInstrument = Instrument();
 thisInstrument.Name="Generic instrument";
-thisInstrument.SamplingFrequency=100;
+thisInstrument.SamplingFrequency=10;
 thisInstrument.Chanels = 8;
 thisInstrument.WaveLenght = 2;
 
