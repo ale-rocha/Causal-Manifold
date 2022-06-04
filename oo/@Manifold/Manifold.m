@@ -7,6 +7,7 @@ classdef Manifold < matlab.mixin.SetGet
       DistanceFunction;
       Signature;
       SetEvents;
+      GridEdgesStructure;
       GridStructure;
    end
    methods
@@ -31,12 +32,18 @@ classdef Manifold < matlab.mixin.SetGet
        end
        function obj = gridManifold(obj)
             grid_events = [];
-            [min_phase,max_phase] = obj.SetEvents.RangePhase;
-            [min_frequency,max_frequency] = obj.SetEvents.RangeFrequency;
-            [min_time,max_time] = obj.SetEvents.RangeTime;
-            for p = min_phase:max_phase
-                for f = min_frequency:max_frequency
-                    for t = min_time:max_time
+            grid_edges = [];
+            min_phase = 0;
+            max_phase = 2*pi-pi/10;
+            min_frequency = obj.SetEvents.FrequencyMin;
+            max_frequency = 7;
+            min_time = obj.SetEvents.TimeMin;
+            max_time = obj.SetEvents.TimeMax;
+            
+            for p = min_phase:pi/10:max_phase
+                for f = 0:max_frequency
+                    for t = 0:max_time
+                        %Event declaration
                         e = Event();
                         e.Phase = p;
                         e.Frequency = f;
@@ -45,10 +52,30 @@ classdef Manifold < matlab.mixin.SetGet
                         e.PhaseSin = sin(p);
                         e.InfoChanel = "grid";
                         grid_events =[grid_events,e];
+                        
+                        %Edge declarations
+                        g = Edge();
+                        g.PhaseA = p;
+                        g.PhaseB = p+1;
+                        g.PhaseCosA = cos(p);
+                        g.PhaseCosB = cos(p+1);
+                        g.PhaseSinA = sin(p);
+                        g.PhaseSinB = sin(p+1);
+                        g.FrequencyA = f;
+                        g.FrequencyB = f+1;
+                        g.TimeA = t;
+                        g.TimeB = t+1;
+                        if p == max_phase  %Correction to conect circle
+                            g.PhaseB = min_phase;
+                        end
+
+                        grid_edges = [grid_edges,g];
+                        
                     end
                 end
             end
             obj.GridStructure=grid_events;
+            obj.GridEdgesStructure = grid_edges;
        end
       
       

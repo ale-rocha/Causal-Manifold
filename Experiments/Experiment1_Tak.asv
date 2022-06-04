@@ -24,7 +24,7 @@ samplig_rate = 10;
 %Instrument
 thisInstrument = Instrument();
 thisInstrument.Name="Generic instrument";
-thisInstrument.SamplingFrequency=100;
+thisInstrument.SamplingFrequency=10;
 thisInstrument.Chanels = 8;
 thisInstrument.WaveLenght = 2;
 
@@ -66,9 +66,9 @@ gridEdges = getStructuredEdges(thisManifold.GridEdgesStructure);
 eventsManifold = getStructuredEvents(thisManifold.SetEvents.EventsRaw);
 
 figure;
-scatter3(eventsManifold.Phase,eventsManifold.Frequency,eventsManifold.Time,20,eventsManifold.InfoChanel,'filled');
+scatter3(eventsManifold.Phase,eventsManifold.Frequency,eventsManifold.Time,20,eventsManifold.Time,'filled');
 hold on;
-scatter3(gridManifold.Phase,gridManifold.Frequency,gridManifold.Time);
+scatter3(gridManifold.Phase,gridManifold.Frequency,gridManifold.Time,20,"gr",'filled');
 xlabel("Phase"); ylabel("Freq"); zlabel("Time");
 shg;
 %Convertir listas de objetos en arrays

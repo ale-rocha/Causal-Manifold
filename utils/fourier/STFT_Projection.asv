@@ -22,7 +22,7 @@ function [store_max_phases, store_max_freq, store_time] = STFT_Projection(signal
     store_time = [];
     
     win = hamming(sample_rate,'periodic');
-    win= kaiser(10,20);
+    win= kaiser(100,20);
     [spectre_stft,frequencies_stft,time_stft] = stft(signal,sample_rate,'Window',win,'OverlapLength',0);
     figure;
     stft(signal,sample_rate,'Window',win,'OverlapLength',0);

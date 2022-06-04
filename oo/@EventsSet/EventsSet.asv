@@ -2,6 +2,12 @@ classdef EventsSet < matlab.mixin.SetGet
    properties
       EventsRaw ;
       BilinearModel;
+      PhaseMin;
+      PhaseMax;
+      FrequencyMin;
+      FrequencyMax;
+      TimeMin;
+      TimeMax;
    end
    methods
       function value = get.EventsRaw(obj)
@@ -29,12 +35,16 @@ classdef EventsSet < matlab.mixin.SetGet
                   [S_phase,S_freq,S_time] = STFT_Projection(y, obj.BilinearModel.Instrument.SamplingFrequency);
                   %Create event object
                   for t = 1:size(S_time,2)
+                        %Event declaration
                         e = Event();
                         e.Phase = S_phase(t);
                         e.Frequency = S_freq(t);
                         e.Time = S_time(t) ;
+                        e.PhaseCos = cos(S_phase(t));
+                        e.PhaseSin = sin(S_phase(t));
                         e.InfoChanel = chanel;
                         temp_events = [temp_events,e];
+
                         
                         if e.Phase > max_phase
                             max_phase = e.Phase;
@@ -42,9 +52,9 @@ classdef EventsSet < matlab.mixin.SetGet
                             min_phase = e.Phase;
                         end
                         if e.Frequency > max_frequency
-                            max_frequency = e.Freq;
+                            max_frequency = e.Frequency;
                         elseif e.Frequency < min_frequency
-                            min_frequency = e.Freq;
+                            min_frequency = e.Frequency;
                         end
                         if size(S_time,2) > max_time
                             max_time = size(S_time,2);
@@ -53,11 +63,12 @@ classdef EventsSet < matlab.mixin.SetGet
                         end
      
                   end
-          obj.ran_phase = max_phase;
-          obj.min_phase = min_phase;
-          obj.max_frequency = max_frequency;
-          obj.min_frequency = min_frequency;
-          obj.EventsRaw = temp_events;
-      end
+                  obj.PhaseMin = [min_phase,max_phase];
+                  obj.PhaseMin = [min_phase,max_phase];
+                  obj.RangeFrequency = [min_frequency,max_frequency];
+                  obj.RangeTime = [min_time,max_time];
+                  obj.EventsRaw = temp_events;
+              end
+        end
    end
 end

@@ -7,6 +7,7 @@ classdef Manifold < matlab.mixin.SetGet
       DistanceFunction;
       Signature;
       SetEvents;
+      GridEdgesStructure;
       GridStructure;
    end
    methods
@@ -31,22 +32,41 @@ classdef Manifold < matlab.mixin.SetGet
        end
        function obj = gridManifold(obj)
             grid_events = [];
+            grid_edges = [];
             [min_phase,max_phase] = obj.SetEvents.RangePhase;
             [min_frequency,max_frequency] = obj.SetEvents.RangeFrequency;
             [min_time,max_time] = obj.SetEvents.RangeTime;
             for p = min_phase:max_phase
                 for f = min_frequency:max_frequency
                     for t = min_time:max_time
+                        
+                        %Event declaration
                         e = Event();
                         e.Phase = p;
                         e.Frequency = f;
                         e.Time = t ;
+                        e.PhaseCos = cos(p);
+                        e.PhaseSin = sin(p);
                         e.InfoChanel = "grid";
                         grid_events =[grid_events,e];
+                        
+                        %Edge declarations
+                        g = Edge();
+                        g.PhaseA = p;
+                        g.PhaseB = p+1;
+                        g.FrequencyA = f;
+                        g.FrequencyB = f+1;
+                        g.TimeA = t;
+                        g.TimeB = t+1;
+                        if p = max_time:
+                            if f = max_frequency
+                        grid_edges = [grid_edges,g];
+                        
                     end
                 end
             end
             obj.GridStructure=grid_events;
+            obj.GridEdgesStructure = grid_edges;
        end
       
       
