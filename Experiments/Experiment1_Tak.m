@@ -65,11 +65,26 @@ gridManifold = getStructuredEvents(thisManifold.GridStructure);
 gridEdges = getStructuredEdges(thisManifold.GridEdgesStructure);
 eventsManifold = getStructuredEvents(thisManifold.SetEvents.EventsRaw);
 
+data1 = [[gridManifold.Phase],[gridManifold.Frequency],[gridManifold.Time]];
+data1 = reshape(data1,size(gridManifold.Phase,2),3);
+writematrix(data1,'gridManifold.csv') 
+
+%PhaseA,PhaseB,PhaseCosA,PhaseCosB,PhaseSinA,PhaseSinB,FreqA,FreqB,TimeA,TimeB
+data2 = [gridEdges.PhaseA,gridEdges.PhaseB,gridEdges.PhaseCosA,gridEdges.PhaseCosB,gridEdges.PhaseSinA,gridEdges.PhaseSinB,gridEdges.FrequencyA,gridEdges.FrequencyB,gridEdges.TimeA,gridEdges.TimeB];
+data2 = reshape(data2,size(gridEdges.PhaseA,2),10);
+writematrix(data2,'edgesManifold.csv') 
+
+data3 = [[eventsManifold.Phase],[eventsManifold.Frequency],[eventsManifold.Time]];
+data3 = reshape(data3,size(eventsManifold.Phase,2),3);
+writematrix(data3,'eventsManifold.csv') 
+
 figure;
 scatter3(eventsManifold.Phase,eventsManifold.Frequency,eventsManifold.Time,20,eventsManifold.InfoChanel,'filled');
 hold on;
 scatter3(gridManifold.Phase,gridManifold.Frequency,gridManifold.Time);
 xlabel("Phase"); ylabel("Freq"); zlabel("Time");
 shg;
-%Convertir listas de objetos en arrays
+% Ya proyectado el cubindro, ahora dibujar el cono de causalidad alrededor
+% de un punto.
+
 
