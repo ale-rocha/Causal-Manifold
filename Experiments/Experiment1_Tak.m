@@ -52,6 +52,8 @@ thisManifold.Normalized = false;
 thisManifold.Description = "Manifold de prueba";
 thisManifold.SetEvents = thisEvents;
 thisManifold.gridManifold; %poblar el manifold
+thisManifold.computeCausalCones; %Calcular conos causales para cada punto
+%thisManifold.mappingConextions;
 
 % %Creating experiment model
 thisExperiment = Experiment();
@@ -59,32 +61,74 @@ thisExperiment.Name ="Tak Experiment";
 thisExperiment.Type="Testing";
 thisExperiment.Manifold = thisManifold;
 
+% --------------------------------------------------------------------
+% Saving input dataseries  -------------------------------------------
+channels_data = thisBilinearModel.RawObservations;
+writematrix(channels_data,'Beauty_visualization/channels_data.csv') 
+disp("[ 1 ] Channels saved");
 
-% Visualization
+%---------------------------------------------------------------------
+% Saving manifold events and grid ------------------------------------
+% Extracting data ----------------------
 gridManifold = getStructuredEvents(thisManifold.GridStructure);
 gridEdges = getStructuredEdges(thisManifold.GridEdgesStructure);
 eventsManifold = getStructuredEvents(thisManifold.SetEvents.EventsRaw);
-
-data1 = [[gridManifold.Phase],[gridManifold.Frequency],[gridManifold.Time]];
-data1 = reshape(data1,size(gridManifold.Phase,2),3);
-writematrix(data1,'gridManifold.csv') 
-
+% Saving grid ---------------------------
+data1 = [[gridManifold.PhaseCos],[gridManifold.PhaseSin],[gridManifold.Phase],[gridManifold.Frequency],[gridManifold.Time]];
+data1 = reshape(data1,size(gridManifold.Phase,2),5);
+writematrix(data1,'Beauty_visualization/gridManifold.csv') 
+% Saving grid edges ----------------------
 %PhaseA,PhaseB,PhaseCosA,PhaseCosB,PhaseSinA,PhaseSinB,FreqA,FreqB,TimeA,TimeB
 data2 = [gridEdges.PhaseA,gridEdges.PhaseB,gridEdges.PhaseCosA,gridEdges.PhaseCosB,gridEdges.PhaseSinA,gridEdges.PhaseSinB,gridEdges.FrequencyA,gridEdges.FrequencyB,gridEdges.TimeA,gridEdges.TimeB];
 data2 = reshape(data2,size(gridEdges.PhaseA,2),10);
 writematrix(data2,'edgesManifold.csv') 
-
+% Saving events observations -------------
 data3 = [[eventsManifold.Phase],[eventsManifold.Frequency],[eventsManifold.Time]];
 data3 = reshape(data3,size(eventsManifold.Phase,2),3);
-writematrix(data3,'eventsManifold.csv') 
+writematrix(data3,'Beauty_visualization/eventsManifold.csv') 
+% -----------------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-figure;
-scatter3(eventsManifold.Phase,eventsManifold.Frequency,eventsManifold.Time,20,eventsManifold.InfoChanel,'filled');
-hold on;
-scatter3(gridManifold.Phase,gridManifold.Frequency,gridManifold.Time);
-xlabel("Phase"); ylabel("Freq"); zlabel("Time");
-shg;
-% Ya proyectado el cubindro, ahora dibujar el cono de causalidad alrededor
-% de un punto.
+%Saving causal cones%-----------------------------------------------------------
+%-------------------------------------------------------------------------------
+for refP = 1:size(thisManifold.CausalCones,2)
+    disp("ref point cone");
+    disp(string(thisManifold.CausalCones(refP).ReferencePoint.InfoChanel));
+    %Guardamos archivo
+    freqname = strcat("Ch_",string(thisManifold.CausalCones(refP).ReferencePoint.InfoChanel));
+    timename = strcat("_Time_",string(thisManifold.CausalCones(refP).ReferencePoint.Time));
+    namefile = strcat(freqname,timename);
+    namefile = strcat('/Users/alerocha/Documents/Causal-Manifold/Experiments/ConesExperiment1/',namefile);
+    mkdir(namefile);
+    namefile = strcat(namefile,'/');
+  
+    
+    %Saving future cone -------------------------->
+    %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms
+    futureCone = [thisManifold.CausalCones(refP).FutureCone.PhaseCos,thisManifold.CausalCones(refP).FutureCone.PhaseSin,thisManifold.CausalCones(refP).FutureCone.Phase,thisManifold.CausalCones(refP).FutureCone.Frequency,thisManifold.CausalCones(refP).FutureCone.Time,thisManifold.CausalCones(refP).FutureCone.InfoChanel];
+    futureCone = reshape(futureCone,size(thisManifold.CausalCones(refP).FutureCone,2),6);
+    namearch = strcat(namefile,"futureCone.csv");
+    writematrix(futureCone,namearch) 
 
-
+    %Saving past cone -------------------------->
+    %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms 
+    %pastCone = [thisManifold.CausalCones(refP).PastCone.PhaseCos,thisManifold.CausalCones(refP).PastCone.PhaseSin,thisManifold.CausalCones(refP).PastCone.Phase,thisManifold.CausalCones(refP).PastCone.Frequency,thisManifold.CausalCones(refP).PastCone.Time,thisManifold.CausalCones(refP).PastCone.InfoChanel];
+    %pastCone = reshape(pastCone,size(thisManifold.CausalCones(refP).PastCone,2),6);
+    %namearch = strcat(namefile,"pastCone.csv");
+    %writematrix(futureCone,namearch) 
+    
+    %Saving horismos cone -------------------------->
+    %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms
+    horismosCone = [thisManifold.CausalCones(refP).Horismos.PhaseCos,thisManifold.CausalCones(refP).Horismos.PhaseSin,thisManifold.CausalCones(refP).Horismos.Phase,thisManifold.CausalCones(refP).Horismos.Frequency,thisManifold.CausalCones(refP).Horismos.Time,thisManifold.CausalCones(refP).Horismos.InfoChanel];
+    horismosCone = reshape(horismosCone,size(thisManifold.CausalCones(refP).Horismos,2),6);
+    namearch = strcat(namefile,"horismosCone.csv");
+    writematrix(horismosCone,namearch) 
+    
+    %Saving spacelike cone -------------------------->
+    %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms
+    spacelikeCone = [thisManifold.CausalCones(refP).SpaceLike.PhaseCos,thisManifold.CausalCones(refP).SpaceLike.PhaseSin,thisManifold.CausalCones(refP).SpaceLike.Phase,thisManifold.CausalCones(refP).SpaceLike.Frequency,thisManifold.CausalCones(refP).SpaceLike.Time,thisManifold.CausalCones(refP).SpaceLike.InfoChanel];
+    spacelikeCone = reshape(spacelikeCone,size(thisManifold.CausalCones(refP).SpaceLike,2),6);
+    namearch = strcat(namefile,"spacelikeCone.csv");
+    writematrix(spacelikeCone,namearch) 
+        
+end

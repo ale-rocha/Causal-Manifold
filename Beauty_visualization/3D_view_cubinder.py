@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import chart_studio
 username = "rochasolache"
-api_key ='L2LvbI7c2WtsThwEBoPM'
+api_key ='abtA3JrpQUvWsIGfaiAk'
 
 chart_studio.tools.set_credentials_file(username=username, api_key=api_key)
 import chart_studio.plotly as py
