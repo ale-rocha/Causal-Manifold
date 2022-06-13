@@ -71,35 +71,70 @@ classdef Manifold < matlab.mixin.SetGet
             obj.Conex = conex;
        end      
        
-       function obj = computeCausalCones(obj)
-           causal_cones = [];
-           for eRef = 1:size(obj.SetEvents.EventsRaw,2)
-                myFutureCone = [];
-                mySpaceLikeCone = [];
-                myHorismosCone = [];
-                myPastCone = [];
-                for e = 1:size(obj.SetEvents.EventsRaw,2)
-                    distance = abs((obj.SetEvents.EventsRaw(eRef).Phase - obj.SetEvents.EventsRaw(e).Phase))+abs((obj.SetEvents.EventsRaw(eRef).Frequency - obj.SetEvents.EventsRaw(e).Frequency))-abs((obj.SetEvents.EventsRaw(eRef).Time - obj.SetEvents.EventsRaw(e).Time));
-                    if distance < 0 
-                        myFutureCone = [myFutureCone,obj.SetEvents.EventsRaw(e)];
-                    elseif distance < 0 && (obj.SetEvents.EventsRaw(eRef).Time > obj.SetEvents.EventsRaw(e).Time)
-                        myPastCone = [myPastCone,obj.SetEvents.EventsRaw(e)];
-                    elseif distance > 0
-                        mySpaceLikeCone = [mySpaceLikeCone,obj.SetEvents.EventsRaw(e)];
-                    elseif distance == 0 
-                        myHorismosCone = [myHorismosCone,obj.SetEvents.EventsRaw(e)];
+       function obj = computeCausalCones(obj,rawdataType)
+           if rawdataType == "RawData"
+               causal_cones = [];
+               for eRef = 1:size(obj.SetEvents.EventsRaw,2)
+                    myFutureCone = [];
+                    mySpaceLikeCone = [];
+                    myHorismosCone = [];
+                    myPastCone = [];
+                    for e = 1:size(obj.SetEvents.EventsRaw,2)
+                        distance = abs((obj.SetEvents.EventsRaw(eRef).Phase - obj.SetEvents.EventsRaw(e).Phase))+abs((obj.SetEvents.EventsRaw(eRef).Frequency - obj.SetEvents.EventsRaw(e).Frequency))-abs((obj.SetEvents.EventsRaw(eRef).Time - obj.SetEvents.EventsRaw(e).Time));
+                        if distance < 0 
+                            myFutureCone = [myFutureCone,obj.SetEvents.EventsRaw(e)];
+                        elseif distance < 0 && (obj.SetEvents.EventsRaw(eRef).Time > obj.SetEvents.EventsRaw(e).Time)
+                            myPastCone = [myPastCone,obj.SetEvents.EventsRaw(e)];
+                        elseif distance > 0
+                            mySpaceLikeCone = [mySpaceLikeCone,obj.SetEvents.EventsRaw(e)];
+                        elseif distance == 0 
+                            myHorismosCone = [myHorismosCone,obj.SetEvents.EventsRaw(e)];
+                        end
                     end
-                end
-                cone.ReferencePoint = obj.SetEvents.EventsRaw(eRef);
-                cone.FutureCone = myFutureCone;
-                cone.PastCone = myPastCone;
-                cone.SpaceLike = mySpaceLikeCone;
-                cone.Horismos = myHorismosCone;
-                cone.Distance = distance;
-                causal_cones = [causal_cones,cone];
+                    cone.ReferencePoint = obj.SetEvents.EventsRaw(eRef);
+                    cone.FutureCone = myFutureCone;
+                    cone.PastCone = myPastCone;
+                    cone.SpaceLike = mySpaceLikeCone;
+                    cone.Horismos = myHorismosCone;
+                    cone.Distance = distance;
+                    causal_cones = [causal_cones,cone];
+               end
+               obj.CausalCones = causal_cones;
+           
+           elseif rawdataType == "Normalized" 
+               causal_cones = [];
+               for eRef = 1:size(obj.SetEvents.EventsRawNormalized,2)
+                    myFutureCone = [];
+                    mySpaceLikeCone = [];
+                    myHorismosCone = [];
+                    myPastCone = [];
+                    for e = 1:size(obj.SetEvents.EventsRawNormalized,2)
+                        distance = abs((obj.SetEvents.EventsRawNormalized(eRef).Phase - obj.SetEvents.EventsRawNormalized(e).Phase))+abs((obj.SetEvents.EventsRawNormalized(eRef).Frequency - obj.SetEvents.EventsRawNormalized(e).Frequency))-abs((obj.SetEvents.EventsRawNormalized(eRef).Time - obj.SetEvents.EventsRawNormalized(e).Time));
+                        if distance < 0 
+                            myFutureCone = [myFutureCone,obj.SetEvents.EventsRawNormalized(e)];
+                        elseif distance < 0 && (obj.SetEvents.EventsRawNormalized(eRef).Time > obj.SetEvents.EventsRawNormalized(e).Time)
+                            myPastCone = [myPastCone,obj.SetEvents.EventsRawNormalized(e)];
+                        elseif distance > 0
+                            mySpaceLikeCone = [mySpaceLikeCone,obj.SetEvents.EventsRawNormalized(e)];
+                        elseif distance == 0 
+                            myHorismosCone = [myHorismosCone,obj.SetEvents.EventsRawNormalized(e)];
+                        end
+                    end
+                    cone.ReferencePoint = obj.SetEvents.EventsRawNormalized(eRef);
+                    cone.FutureCone = myFutureCone;
+                    cone.PastCone = myPastCone;
+                    cone.SpaceLike = mySpaceLikeCone;
+                    cone.Horismos = myHorismosCone;
+                    cone.Distance = distance;
+                    causal_cones = [causal_cones,cone];
+               end
+               obj.CausalCones = causal_cones;
+               
            end
-           obj.CausalCones = causal_cones;
        end
+       
+       
+       
        function obj = gridManifold(obj)
             grid_events = [];
             grid_edges = [];

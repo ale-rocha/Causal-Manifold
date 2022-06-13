@@ -1,6 +1,8 @@
 classdef EventsSet < matlab.mixin.SetGet
    properties
       EventsRaw ;
+      NormalizedType; 
+      EventsRawNormalized;
       BilinearModel;
       PhaseMin;
       PhaseMax;
@@ -13,9 +15,16 @@ classdef EventsSet < matlab.mixin.SetGet
       function value = get.EventsRaw(obj)
         value = obj.EventsRaw;
       end
+      function value = get.NormalizedType(obj)
+        value = obj.NormalizedType;
+      end
+      function value = get.EventsRawNormalized(obj)
+        value = obj.EventsRawNormalized;
+      end
       function value = get.BilinearModel(obj)
         value = obj.BilinearModel;
       end   
+      
       function obj = ProyectObservationsToEvents(obj)
           rawObs = obj.BilinearModel.RawObservations;
           temp_events = [];
@@ -59,10 +68,10 @@ classdef EventsSet < matlab.mixin.SetGet
                         elseif e.Frequency < min_frequency
                             min_frequency = e.Frequency;
                         end
-                        if size(S_time,2) > max_time
-                            max_time = size(S_time,2);
-                        elseif size(S_time,2) < min_time
-                            min_time = size(S_time,2);
+                        if e.Time > max_time
+                            max_time = e.Time;
+                        elseif e.Time < min_time
+                            min_time = e.Time;
                         end
      
                   end
@@ -73,7 +82,55 @@ classdef EventsSet < matlab.mixin.SetGet
                   obj.TimeMin = min_time;
                   obj.TimeMax = max_time;
                   obj.EventsRaw = temp_events;
+                  
+                  
               end
+              
+        % Normalize all events
+        temp_events = [];
+        for ne = 1:size(obj.EventsRaw,2)
+            
+            % normalize frequency
+            normFreq = obj.EventsRaw(ne).Frequency;
+            normFreq = normFreq - obj.FrequencyMin;
+            normFreq = normFreq ./ obj.FrequencyMax;
+            
+            %normalize time
+            normTime = obj.EventsRaw(ne).Time;
+            normTime = normTime - obj.TimeMin;
+            normTime = normTime ./ obj.TimeMax;
+            disp("Max time");
+            disp(obj.TimeMax);
+            disp("Min time");
+            disp(obj.TimeMin);
+            disp("Raw time");
+            disp(obj.EventsRaw(ne).Time);
+            disp("Normalized");
+            disp(normTime);
+            disp("------------------");
+            
+            %normalize cos ans sin phase
+            normCos = obj.EventsRaw(ne).PhaseCos;
+            normCos = normCos - 0;
+            normCos = normCos ./ 2*pi;
+            normSin = obj.EventsRaw(ne).PhaseSin;
+            normSin = normSin - 0;
+            normSin = normSin ./ 2*pi;
+            
+            %normalize  phase
+            normPhase = asin(normSin);
+            
+            e = Event();
+            e.Phase = normPhase;
+            e.Frequency = normFreq;
+            e.Time = normTime;
+            e.PhaseCos = normCos;
+            e.PhaseSin = normSin;
+            e.InfoChanel = obj.EventsRaw(ne).InfoChanel;
+            temp_events = [temp_events,e];
         end
+        obj.EventsRawNormalized = temp_events; %saving
+      end
+      alskjdla
    end
 end
