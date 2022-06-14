@@ -9,11 +9,15 @@ classdef EventsSet < matlab.mixin.SetGet
       FrequencyMin;
       FrequencyMax;
       TimeMin;
+      FrequencySupRange;
       TimeMax;
    end
    methods
       function value = get.EventsRaw(obj)
         value = obj.EventsRaw;
+      end
+      function value = get.FrequencySupRange(obj)
+        value = obj.FrequencySupRange;
       end
       function value = get.NormalizedType(obj)
         value = obj.NormalizedType;
@@ -93,7 +97,7 @@ classdef EventsSet < matlab.mixin.SetGet
             % normalize frequency
             normFreq = obj.EventsRaw(ne).Frequency;
             normFreq = normFreq - obj.FrequencyMin;
-            normFreq = normFreq ./ obj.FrequencyMax;
+            normFreq = normFreq ./ obj.FrequencySupRange;
             
             %normalize time
             normTime = obj.EventsRaw(ne).Time;
@@ -131,6 +135,5 @@ classdef EventsSet < matlab.mixin.SetGet
         end
         obj.EventsRawNormalized = temp_events; %saving
       end
-      alskjdla
    end
 end
