@@ -19,7 +19,6 @@
 
 function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
          
-
          simulationLength = size(P, 2); % Longjtud de la simulacion
          nRegions = size(P, 1);
          fuentes_opticas = 6;
@@ -70,8 +69,7 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
          disp("Dimensiones de la matriz de sensibilidad");
          disp(size(S));
          
-        % calculate optical density changes  para cada tiempo t y para cada
-        % longitud de onda
+        % calculate optical density changes for each t in each lambda
         response_temporal = ones(wavelengths,fuentes_opticas,simulationLength);
         for t = 1:simulationLength
             disp("Computando el tiempo-----------------------------------");
@@ -101,8 +99,8 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
 
                 response_lambda(i,:,:) = temp; % respuesta lambda 
             end
-            response_temporal (1,:,t)= response_lambda(1,:,:); %Guardando longitus de onda 1
-            response_temporal (2,:,t)= response_lambda(2,:,:); %Guardando longitus de onda 2
+            response_temporal (1,:,t)= response_lambda(1,:,:); %saving lambda 1
+            response_temporal (2,:,t)= response_lambda(2,:,:); %saving lambda 2
         end
         
         respuesta.lambda1=response_temporal(1,:,:);
@@ -115,12 +113,5 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
         plot(response_temporal);
         shg;
         
-        %esta función regresa un array de [receptores X tiempo]
-        %cada receptor observa en 2 longitudes de onda.
-        %
-        %  reciber1 -lambda1 -------------------------> time
-        %  reciber1 -lambda2
-        %  reciber2 -lambda1
-        %  reciber2 -lambda2
-        %   ....
+     
 end

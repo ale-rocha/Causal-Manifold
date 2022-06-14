@@ -37,7 +37,6 @@ thisBilinearModel.Instrument = thisInstrument;
 thisBilinearModel.Params = params_dcm;
 thisBilinearModel.ComputeSimulations; %Run simulations
 
-stop;
 
 %Creating events (hereda de simulacion bilineal)
 thisEvents = EventsSet();
