@@ -119,24 +119,24 @@ F_P =[(extintion1*0.0007358251) (extintion2*0.001104715) ; (extintion1*0.0011593
     xlabel('Time [S]');
     shg;
 
-    %figure
-    %gap_1 = transpose(M1);
-    %gap_2 = gap_1(1,:);
-    %plot(transpose(M1)-gap_2, 'LineWidth', 1);
-    %title('M1 Heamoglobin Concentration');
-    %legend({'HbT','HbR', 'HbO2'},'Location','southwest');
-    %ylabel('Heamoglobin Concentration [\mu M]'); 
-    %xlabel('Time [S]');
-    %shg;
-    %figure
-    %gap_1 = transpose(SMA);
-    %gap_2 = gap_1(1,:);
-    %plot(transpose(SMA)-gap_2,'LineWidth', 1);
-    %title('SMA Heamoglobin Concentration');
-    %legend({'HbT','HbR', 'HbO2'},'Location','southwest');
-    %ylabel(' Heamoglobin Concentration [\mu M]'); 
-    %xlabel('Time [S]');
-    %shg;
+    figure
+    gap_1 = transpose(M1);
+    gap_2 = gap_1(1,:);
+    plot(transpose(M1)-gap_2, 'LineWidth', 1);
+    title('M1 Heamoglobin Concentration');
+    legend({'HbT','HbR', 'HbO2'},'Location','southwest');
+    ylabel('Heamoglobin Concentration [\mu M]'); 
+    xlabel('Time [S]');
+    shg;
+    figure
+    gap_1 = transpose(SMA);
+    gap_2 = gap_1(1,:);
+    plot(transpose(SMA)-gap_2,'LineWidth', 1);
+    title('SMA Heamoglobin Concentration');
+    legend({'HbT','HbR', 'HbO2'},'Location','southwest');
+    ylabel(' Heamoglobin Concentration [\mu M]'); 
+    xlabel('Time [S]');
+    shg;
     
     %Bulding the return
     Y = [Y_R1; Y_R2];

@@ -32,6 +32,7 @@ P_SD = [0.5 0.5 0.5 3];
 Noise = 0;
 [OR] = OpticLib( P,Q,U,A,Noise); 
 
+
 %% Display results
 if (verbose_plot == true)
     BilinearPlotThetaA(A,B,C,U,Z,P,OR);
