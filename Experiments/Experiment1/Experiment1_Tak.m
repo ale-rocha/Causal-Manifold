@@ -25,7 +25,7 @@ samplig_rate = 10;
 thisInstrument = Instrument();
 thisInstrument.Name="Generic instrument";
 thisInstrument.SamplingFrequency=100;
-thisInstrument.Chanels = 8;
+thisInstrument.Chanels = 12;
 thisInstrument.WaveLenght = 2;
 
 %Creating BilinearSimulation
@@ -36,7 +36,6 @@ thisBilinearModel.Name = "Bilinear model Tack";
 thisBilinearModel.Instrument = thisInstrument;
 thisBilinearModel.Params = params_dcm;
 thisBilinearModel.ComputeSimulations; %Run simulations
-
 
 %Creating events (hereda de simulacion bilineal)
 thisEvents = EventsSet();
@@ -54,11 +53,12 @@ thisManifold.DistanceFunction = "x+y-z";
 thisManifold.Normalized = false;
 thisManifold.Description = "Manifold de prueba";
 thisManifold.SetEvents = thisEvents;
-thisManifold.gridManifold; %poblar el manifold
-thisManifold.computeCausalCones("Normalized"); %Calcular conos causales para cada punto
-thisManifold.DeltaGridPhase = pi/10;
-thisManifold.DeltaGridFreq = 5;
-thisManifold.DeltaGridTime = 1;
+DeltaGridPhase = pi/10;
+DeltaGridFreq = 5;
+DeltaGridTime = 1;
+thisManifold.gridManifold(DeltaGridPhase,DeltaGridFreq,DeltaGridTime); %poblar el manifold
+thisManifold.computeCausalCones("RawData"); %Calcular conos causales para cada punto
+
 %thisManifold.mappingConextions;
 
 % %Creating experiment model
@@ -82,6 +82,7 @@ disp("[ 1 ] Channels saved");
 
 %---------------------------------------------------------------------
 % Saving manifold events and grid ------------------------------------
+
 % Extracting data ----------------------
 namefile = '/Users/alerocha/Documents/Causal-Manifold/Experiments/Experiment1/Outputs/Manifold';
 mkdir(namefile);
@@ -89,39 +90,59 @@ namefile = strcat(namefile,'/');
 gridManifold = getStructuredEvents(thisManifold.GridStructure);
 gridEdges = getStructuredEdges(thisManifold.GridEdgesStructure);
 eventsManifold = getStructuredEvents(thisManifold.SetEvents.EventsRaw);
+
 % Saving grid ---------------------------
-data1 = [[gridManifold.PhaseCos],[gridManifold.PhaseSin],[gridManifold.Phase],[gridManifold.Frequency],[gridManifold.Time]];
-data1 = reshape(data1,size(gridManifold.Phase,2),5);
-namefile = strcat(namefile,'gridManifold.csv');
-writematrix(data1,namefile);
+data1 =  [[gridManifold.Phase],
+         [gridManifold.PhaseSin],
+         [gridManifold.PhaseCos],
+         [gridManifold.Frequency],
+         [gridManifold.Time],
+         [gridManifold.InfoChanel],
+         [gridManifold.InfoMeasure],
+         [gridManifold.PathCones]];
+
+namefileA = strcat(namefile,'gridManifold.csv');
+writematrix(transpose(data1),namefileA);
+disp("Saved [ 1 ]");
+
 % Saving grid edges ----------------------
 %PhaseA,PhaseB,PhaseCosA,PhaseCosB,PhaseSinA,PhaseSinB,FreqA,FreqB,TimeA,TimeB
-data2 = [gridEdges.PhaseA,gridEdges.PhaseB,gridEdges.PhaseCosA,gridEdges.PhaseCosB,gridEdges.PhaseSinA,gridEdges.PhaseSinB,gridEdges.FrequencyA,gridEdges.FrequencyB,gridEdges.TimeA,gridEdges.TimeB];
-data2 = reshape(data2,size(gridEdges.PhaseA,2),10);
-namefile = strcat(namefile,'edgesManifold.csv');
-writematrix(data2,namefile);
-% Saving events observations -------------
-data3 = [[eventsManifold.Phase],[eventsManifold.Frequency],[eventsManifold.Time]];
-data3 = reshape(data3,size(eventsManifold.Phase,2),3);
-namefile = strcat(namefile,'eventsManifold.csv');
-writematrix(data3,namefile);
+data2 = [[gridEdges.PhaseA],
+         [gridEdges.PhaseB], 
+         [gridEdges.PhaseCosA],
+         [gridEdges.PhaseCosB],
+         [gridEdges.PhaseSinA],
+         [gridEdges.PhaseSinB],
+         [gridEdges.FrequencyA],
+         [gridEdges.FrequencyB],
+         [gridEdges.TimeA],
+         [gridEdges.TimeB]];
+namefileA = strcat(namefile,'edgesManifold.csv');
+writematrix(transpose(data2),namefileA);
+disp("Saved [ 2 ]");
 
+% Saving events observations -------------
+data3 = [[eventsManifold.Phase],
+         [eventsManifold.PhaseSin],
+         [eventsManifold.PhaseCos],
+         [eventsManifold.Frequency],
+         [eventsManifold.Time],
+         [eventsManifold.InfoChanel],
+         [eventsManifold.InfoMeasure],
+         [eventsManifold.PathCones]];
+namefileA = strcat(namefile,'eventsManifold.csv');
+writematrix(transpose(data3),namefileA);
+disp("Saved [ 3 ]");
 
 %Saving causal cones%-----------------------------------------------------------
 %-------------------------------------------------------------------------------
 for refP = 1:size(thisManifold.CausalCones,2)
-    disp("ref point cone");
-    disp(string(thisManifold.CausalCones(refP).ReferencePoint.InfoChanel));
-    %Guardamos archivo
-    idname = strcat("Id_",string(refP));
-    freqname = strcat("_Ch_",string(thisManifold.CausalCones(refP).ReferencePoint.InfoChanel));
-    timename = strcat("_Time_",string(thisManifold.CausalCones(refP).ReferencePoint.Time));
-    namefile = strcat(idname,freqname);
-    namefile = strcat(namefile,timename);
-    namefile = strcat('/Users/alerocha/Documents/Causal-Manifold/Experiments/Experiment1/Outputs/Cones/',namefile);
+
+    filelocalname = thisManifold.CausalCones(refP).ReferencePoint.PathCones;
+    namefile = strcat('/Users/alerocha/Documents/Causal-Manifold/Experiments/Experiment1/Outputs/Cones/',filelocalname);
     mkdir(namefile);
     namefile = strcat(namefile,'/');
-    disp(namefile);
+    disp("Saved [ 4 ]");
     
     %Saving future cone --------------------------------------------------->
     %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms
@@ -129,17 +150,18 @@ for refP = 1:size(thisManifold.CausalCones,2)
     namearch = strcat(namefile,"futureCone.csv"); %empty file
     writematrix([],namearch)
     else
-    futureCone = [thisManifold.CausalCones(refP).FutureCone.PhaseCos,
-                  thisManifold.CausalCones(refP).FutureCone.PhaseSin,
-                  thisManifold.CausalCones(refP).FutureCone.Phase,
-                  thisManifold.CausalCones(refP).FutureCone.Frequency,
-                  thisManifold.CausalCones(refP).FutureCone.Time,
-                  thisManifold.CausalCones(refP).FutureCone.InfoChanel];
-    futureCone = reshape(futureCone,size(thisManifold.CausalCones(refP).FutureCone,2),6);
+    futureCone = [[thisManifold.CausalCones(refP).FutureCone.PhaseCos],
+                  [thisManifold.CausalCones(refP).FutureCone.PhaseSin],
+                  [thisManifold.CausalCones(refP).FutureCone.Phase],
+                  [thisManifold.CausalCones(refP).FutureCone.Frequency],
+                  [thisManifold.CausalCones(refP).FutureCone.Time],
+                  [thisManifold.CausalCones(refP).FutureCone.InfoChanel],
+                  [thisManifold.CausalCones(refP).FutureCone.InfoMeasure]];
+    %futureCone = reshape(futureCone,size(thisManifold.CausalCones(refP).FutureCone,2),6);
     namearch = strcat(namefile,"futureCone.csv");
-    disp(namearch);
-    writematrix(futureCone,namearch) 
+    writematrix(transpose(futureCone),namearch);
     end
+    disp("Saved [ 5 ]");
 
     %Saving past cone ----------------------------------------------------->
     %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms 
@@ -147,17 +169,19 @@ for refP = 1:size(thisManifold.CausalCones,2)
     namearch = strcat(namefile,"pastCone.csv"); %empty file
     writematrix([],namearch)
     else
-    pastCone = [thisManifold.CausalCones(refP).PastCone.PhaseCos,
-                thisManifold.CausalCones(refP).PastCone.PhaseSin,
-                thisManifold.CausalCones(refP).PastCone.Phase,
-                thisManifold.CausalCones(refP).PastCone.Frequency,
-                thisManifold.CausalCones(refP).PastCone.Time,
-                thisManifold.CausalCones(refP).PastCone.InfoChanel];
-    pastCone = reshape(pastCone,size(thisManifold.CausalCones(refP).PastCone,2),6);
+    pastCone = [[thisManifold.CausalCones(refP).PastCone.PhaseCos],
+                [thisManifold.CausalCones(refP).PastCone.PhaseSin],
+                [thisManifold.CausalCones(refP).PastCone.Phase],
+                [thisManifold.CausalCones(refP).PastCone.Frequency],
+                [thisManifold.CausalCones(refP).PastCone.Time],
+                [thisManifold.CausalCones(refP).PastCone.InfoChanel],
+                [thisManifold.CausalCones(refP).PastCone.InfoMeasure]];
+    %pastCone = reshape(pastCone,size(thisManifold.CausalCones(refP).PastCone,2),6);
     namearch = strcat(namefile,"pastCone.csv");
-    disp(namearch);
-    writematrix(futureCone,namearch) 
+    %T.Properties.VariableNames(1:6) = {'PhaseCos','PhaseSin','Phase','Frequency','Time','InfoChanel'};
+    writematrix(transpose(pastCone),namearch);
     end
+    disp("Saved [ 6 ]");
     
     %Saving horismos cone ------------------------------------------------->
     %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms
@@ -165,17 +189,19 @@ for refP = 1:size(thisManifold.CausalCones,2)
     namearch = strcat(namefile,"horismosCone.csv"); %empty file
     writematrix([],namearch)
     else
-    horismosCone = [thisManifold.CausalCones(refP).Horismos.PhaseCos,
-                    thisManifold.CausalCones(refP).Horismos.PhaseSin,
-                    thisManifold.CausalCones(refP).Horismos.Phase,
-                    thisManifold.CausalCones(refP).Horismos.Frequency,
-                    thisManifold.CausalCones(refP).Horismos.Time,
-                    thisManifold.CausalCones(refP).Horismos.InfoChanel];
-    horismosCone = reshape(horismosCone,size(thisManifold.CausalCones(refP).Horismos,2),6);
+    horismosCone = [[thisManifold.CausalCones(refP).Horismos.PhaseCos],
+                    [thisManifold.CausalCones(refP).Horismos.PhaseSin],
+                    [thisManifold.CausalCones(refP).Horismos.Phase],
+                    [thisManifold.CausalCones(refP).Horismos.Frequency],
+                    [thisManifold.CausalCones(refP).Horismos.Time],
+                    [thisManifold.CausalCones(refP).Horismos.InfoChanel],
+                    [thisManifold.CausalCones(refP).Horismos.InfoMeasure]];
+    %horismosCone = reshape(horismosCone,size(thisManifold.CausalCones(refP).Horismos,2),6);
     namearch = strcat(namefile,"horismosCone.csv");
-    disp(namearch);
-    writematrix(horismosCone,namearch) 
+    %T.Properties.VariableNames(1:6) = {'PhaseCos','PhaseSin','Phase','Frequency','Time','InfoChanel'};
+    writematrix(transpose(horismosCone),namearch);
     end
+    disp("Saved [ 7 ]");
     
     %Saving spacelike cone ------------------------------------------------>
     %PhaseCos,PhaseSin,Phase,Frequency,Time,InfoChanel TODO: Nombres colms
@@ -183,16 +209,19 @@ for refP = 1:size(thisManifold.CausalCones,2)
     namearch = strcat(namefile,"spacelikeCone.csv"); %empty file
     writematrix([],namearch)
     else
-    spacelikeCone = [thisManifold.CausalCones(refP).SpaceLike.PhaseCos,
-                     thisManifold.CausalCones(refP).SpaceLike.PhaseSin,
-                     thisManifold.CausalCones(refP).SpaceLike.Phase,
-                     thisManifold.CausalCones(refP).SpaceLike.Frequency,
-                     thisManifold.CausalCones(refP).SpaceLike.Time,
-                     thisManifold.CausalCones(refP).SpaceLike.InfoChanel];
-    spacelikeCone = reshape(spacelikeCone,size(thisManifold.CausalCones(refP).SpaceLike,2),6);
+    spacelikeCone = [[thisManifold.CausalCones(refP).SpaceLike.PhaseCos],
+                     [thisManifold.CausalCones(refP).SpaceLike.PhaseSin],
+                     [thisManifold.CausalCones(refP).SpaceLike.Phase],
+                     [thisManifold.CausalCones(refP).SpaceLike.Frequency],
+                     [thisManifold.CausalCones(refP).SpaceLike.Time],
+                     [thisManifold.CausalCones(refP).SpaceLike.InfoChanel],
+                     [thisManifold.CausalCones(refP).SpaceLike.InfoMeasure]];
+    %spacelikeCone = reshape(spacelikeCone,size(thisManifold.CausalCones(refP).SpaceLike,2),6);
     namearch = strcat(namefile,"spacelikeCone.csv");
-    writematrix(spacelikeCone,namearch)  
+    %T.Properties.VariableNames(1:6) = {'PhaseCos','PhaseSin','Phase','Frequency','Time','InfoChanel'};
+    writematrix(transpose(spacelikeCone),namearch); 
     end
+    disp("Saved [ 8 ]");
         
 end
 namefile = '/Users/alerocha/Documents/Causal-Manifold/Experiments/Experiment1/Backcode';

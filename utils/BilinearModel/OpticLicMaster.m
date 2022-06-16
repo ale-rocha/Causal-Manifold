@@ -29,10 +29,10 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
          %(lamda1) to (lambda2).
          wavelengths = 2;
          
-         disp(" [Optic] Dimensiones de la simulacion ");
-         disp(size(P));
-         disp(" [Optic] Longitudes de onda ");
-         disp(wavelengths);
+         %disp(" [Optic] Dimensiones de la simulacion ");
+         %disp(size(P));
+         %disp(" [Optic] Longitudes de onda ");
+         %disp(wavelengths);
 
          
          %% optics parameters
@@ -49,16 +49,16 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
          DQ = base_hbr.*(Q-1); % dxy-Hb
          DP = N(2).*(P-1); % total Hb
          DH = DP - DQ; % oxy-Hb
-         disp(" [Optic] Dimensiones incremntos de deoxy ");
-         disp(size(DH));
+         %disp(" [Optic] Dimensiones incremntos de deoxy ");
+         %disp(size(DH));
         
          % parameter for correction of pial vein contamination ---- W ----
          W = N(3).* exp([0.5.^.76;0.7.^.1]);        % (2X2)
          W = kron(ones(1,2), W); 
          epsilon=[4.26,4.26;3.88,3.88];
          epsilon=[4.26;3.38];
-         disp("Dimensiones de la matriz de contaminacion de pial venas");
-         disp(size(W));
+         %disp("Dimensiones de la matriz de contaminacion de pial venas");
+         %disp(size(W));
          
          %TODO : fuentes distribuidas
   
@@ -66,14 +66,14 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
          %S = ones(fuentes_opticas,nRegions);
          S = random('norm',5,3,fuentes_opticas,nRegions); %Aleatori samples
          
-         disp("Dimensiones de la matriz de sensibilidad");
-         disp(size(S));
+         %disp("Dimensiones de la matriz de sensibilidad");
+         %disp(size(S));
          
         % calculate optical density changes for each t in each lambda
         response_temporal = ones(wavelengths,fuentes_opticas,simulationLength);
         for t = 1:simulationLength
-            disp("Computando el tiempo-----------------------------------");
-            disp(t);
+            %disp("Computando el tiempo-----------------------------------");
+            %disp(t);
             response_lambda = ones(wavelengths,fuentes_opticas,1);
             for i = 1:wavelengths
                 %Temporalmente asignare unos valores aleatorios de la matri
@@ -81,20 +81,20 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
                 
                 %g(:,i) = (pv .* (S * [sh(i,:) sq(i,:)])) * M(i,:);
                 incrementos = [DH(i,t),DH(i,t); DQ(i,t),DQ(i,t)];
-                disp("Dimension de los incrementos");
+                %disp("Dimension de los incrementos");
                 disp(size(incrementos));
                 temp = S * incrementos;   % ------- 1
                 %      (2x2)*(2X1) = (2X1)
-                disp("Dimension de tenp");
-                disp(size(temp));
-                disp("Dimension de W");
-                disp(size(W));
+                %disp("Dimension de tenp");
+                %disp(size(temp));
+                %disp("Dimension de W");
+                %disp(size(W));
                 temp = temp*W ;
                 %      (2x2)*(2X1) = (2X1)
-                disp("Dimension epsilon");
-                disp(size(epsilon));
-                disp("Temp");
-                disp(size(temp));
+                %disp("Dimension epsilon");
+                %disp(size(epsilon));
+                %disp("Temp");
+                %disp(size(temp));
                 temp=(temp*epsilon);
 
                 response_lambda(i,:,:) = temp; % respuesta lambda 
@@ -103,15 +103,17 @@ function [response_temporal,respuesta] = OpticLicMaster(P,Q,A)
             response_temporal (2,:,t)= response_lambda(2,:,:); %saving lambda 2
         end
         
-        respuesta.lambda1=response_temporal(1,:,:);
-        respuesta.lambda2=response_temporal(2,:,:);
+        response_temporal1 = response_temporal (1,:,:);
+        response_temporal1 = reshape(response_temporal1,[fuentes_opticas,simulationLength]); 
+        respuesta.lambda1 = transpose(response_temporal1);
+        response_temporal2 = response_temporal (2,:,:);
+        response_temporal2 = reshape(response_temporal2,[fuentes_opticas,simulationLength]); 
+        respuesta.lambda2=transpose(response_temporal2);
         
-        disp("Respuesta temporal");
-        disp(size(response_temporal));
+        %disp("Respuesta temporal");
+        %disp(size(response_temporal));
         response_temporal = reshape(response_temporal,[wavelengths*fuentes_opticas,simulationLength]);
         response_temporal = transpose(response_temporal);
-        plot(response_temporal);
-        shg;
         
      
 end

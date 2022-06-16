@@ -6,8 +6,20 @@ classdef Event < matlab.mixin.SetGet
       PhaseCos;
       PhaseSin;
       InfoChanel;
+      InfoMeasure;
+      PathCones;
+      AuxVarDistance;
    end
    methods
+      function value = get.PathCones(obj)
+        value = obj.PathCones;
+      end
+      function value = get.AuxVarDistance(obj)
+        value = obj.AuxVarDistance;
+      end
+      function value = get.InfoMeasure(obj)
+        value = obj.InfoMeasure;
+      end
       function value = get.Phase(obj)
         value = obj.Phase;
       end

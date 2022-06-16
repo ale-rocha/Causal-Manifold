@@ -11,7 +11,7 @@ classdef Manifold < matlab.mixin.SetGet
       GridStructure;
       DeltaGridTime;
       DeltaGridFreq;
-      DeltaGridPhase
+      DeltaGridPhase;
       Conex;
       CausalCones; %Aqui se almacenan puntos de referencias y conos de causalidad
    end
@@ -121,9 +121,11 @@ classdef Manifold < matlab.mixin.SetGet
                     myPastCone = [];
                     for e = 1:size(obj.SetEvents.EventsRawNormalized,2)
                         distance = abs((obj.SetEvents.EventsRawNormalized(eRef).Phase - obj.SetEvents.EventsRawNormalized(e).Phase))+abs((obj.SetEvents.EventsRawNormalized(eRef).Frequency - obj.SetEvents.EventsRawNormalized(e).Frequency))-abs((obj.SetEvents.EventsRawNormalized(eRef).Time - obj.SetEvents.EventsRawNormalized(e).Time));
-                        if distance < 0  & (obj.SetEvents.EventsRawNormalized(eRef).Time < obj.SetEvents.EventsRawNormalized(e).Time)
+                       
+                        
+                        if distance < 0  && (obj.SetEvents.EventsRawNormalized(eRef).Time < obj.SetEvents.EventsRawNormalized(e).Time)
                             myFutureCone = [myFutureCone,obj.SetEvents.EventsRawNormalized(e)];
-                        elseif distance < 0 & (obj.SetEvents.EventsRawNormalized(eRef).Time > obj.SetEvents.EventsRawNormalized(e).Time)
+                        elseif distance < 0 && (obj.SetEvents.EventsRawNormalized(eRef).Time > obj.SetEvents.EventsRawNormalized(e).Time)
                             myPastCone = [myPastCone,obj.SetEvents.EventsRawNormalized(e)];
                         elseif distance > 0
                             mySpaceLikeCone = [mySpaceLikeCone,obj.SetEvents.EventsRawNormalized(e)];
@@ -146,7 +148,7 @@ classdef Manifold < matlab.mixin.SetGet
        
        
        
-       function obj = gridManifold(obj)
+       function obj = gridManifold(obj,DeltaGridPhase,DeltaGridFreq,DeltaGridTime)
             grid_events = [];
             grid_edges = [];
             min_phase = 0;
@@ -157,10 +159,10 @@ classdef Manifold < matlab.mixin.SetGet
             max_time = obj.SetEvents.TimeMax;
             
             conexion_index = 0;
-            
-            for p = min_phase:obj.DeltaGridPhase:max_phase
-                for f = min_time:obj.DeltaGridFreq:max_frequency
-                    for t = 0:obj.DeltaGridTimemax_time
+           
+            for p = min_phase:DeltaGridPhase:max_phase
+                for f = min_time:DeltaGridFreq:max_frequency
+                    for t = 0:DeltaGridTime:max_time
                         %Event declaration
                         e = Event();
                         e.Phase = p;

@@ -5,6 +5,8 @@ function [structData] = getStructuredEvents(Events)
    Frequency = [];
    Time = [];
    InfoChanel = [];
+   InfoMeasured = [];
+   PathCones = [];
    
    for i = 1:size(Events,2)
        Phase = [Phase,Events(i).Phase];
@@ -13,6 +15,8 @@ function [structData] = getStructuredEvents(Events)
        Frequency = [Frequency,Events(i).Frequency];
        Time = [Time,Events(i).Time];
        InfoChanel = [InfoChanel,Events(i).InfoChanel];
+       InfoMeasured = [InfoMeasured,Events(i).InfoMeasure];
+       PathCones =[PathCones,Events(i).PathCones];
    end
    
    structData.Phase = Phase;
@@ -21,5 +25,7 @@ function [structData] = getStructuredEvents(Events)
    structData.Frequency = Frequency;
    structData.Time = Time;
    structData.InfoChanel = InfoChanel;
+   structData.InfoMeasure = InfoMeasured;
+   structData.PathCones = PathCones;
    
 end
